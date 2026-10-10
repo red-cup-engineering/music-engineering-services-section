@@ -1,0 +1,22 @@
+{
+  "name": "@red-cup-engineering/music-engineering-services-section",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Red Cup Engineering service for generative ambient music: a generative composition layer (seeded adaptive intensity-layered arrangement -- leitmotif/harmony/transitions -- and a serializable cross-process performance-spec contract) over @red-cup-engineering/computer-audio-engineering-services-section's DSP core.",
+  "bin": {
+    "render-track": "./scripts/render-track.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/computer-audio-engineering-services-section": "0.2.0",
+    "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0"
+  },
+  "scripts": {
+    "render": "node scripts/render-track.mjs",
+    "render:duo": "node scripts/render-improv-duo.mjs",
+    "render:arrangement": "node scripts/render-arrangement.mjs",
+    "render:demos": "node scripts/render-demos.mjs",
+    "check": "for f in $(find src scripts -name '*.mjs'); do node --check \"$f\" || exit 1; done; echo 'all .mjs files parse cleanly'",
+    "test": "node --test",
+    "serve": "node src/service/http-server.mjs"
+  }
+}

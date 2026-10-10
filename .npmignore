@@ -1,0 +1,10 @@
+# This package's own directory sits several levels below the monorepo
+# root's .gitignore (which excludes *.wav there), and npm's default
+# "fall back to .gitignore" behavior only looks at a .gitignore in this
+# package's own directory -- so without this file, any WAV rendered locally
+# into data/renders/ (scripts/render-track.mjs, render-improv-duo.mjs,
+# render-arrangement.mjs, render-demos.mjs) would get swept into `npm
+# publish`'s tarball. Renders are meant to be reproduced from the documented
+# seed/command in each data/renders/*-note.md, not shipped as binary
+# artifacts in the package itself.
+*.wav

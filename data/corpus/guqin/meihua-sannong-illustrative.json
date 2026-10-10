@@ -1,0 +1,244 @@
+{
+  "$fixture_status": "ILLUSTRATIVE_SYNTHETIC — NOT a transcription of real Shen Qi Mi Pu tablature. Read data/corpus/guqin/source-note.md before using this file for anything.",
+  "schema_version": "0.1.0-scratch",
+  "schema_purpose": "Working intermediate schema for a guqin (jianzipu-style) note-event corpus fixture. Not the project's eventual cross-tradition notation format -- that is a separate future effort. This schema exists only to make the source-given/interpretive distinction explicit and machine-checkable.",
+
+  "piece": {
+    "title_zh": "梅花三弄",
+    "title_pinyin": "Méihuā Sānnòng",
+    "title_en": "Plum Blossom in Three Variations",
+    "anthology_zh": "神奇秘譜",
+    "anthology_pinyin": "Shén Qí Mì Pǔ",
+    "anthology_en": "Handbook of Spirit and Marvel",
+    "anthology_compiler": "Zhu Quan (朱權), Prince of Ning",
+    "anthology_date": "1425 (preface date)",
+    "content_status": "The piece identity and anthology metadata above are real, documented facts (see source-note.md). The note_events in every section below are INVENTED for this fixture -- they illustrate the schema and the documented macro-form, and must not be treated as a reproduction of the 1425 print or of any specific modern dapu (reconstruction) recording."
+  },
+
+  "notation_conventions": {
+    "string_numbering": "Strings numbered 1 (thickest, lowest-pitched, 一弦) through 7 (thinnest, highest-pitched, 七弦) -- real jianzipu convention.",
+    "position_types": {
+      "open": "散音 (sanyin) -- string played unstopped.",
+      "stopped": "按音 (anyin) -- string pressed to a hui position with the left hand and plucked.",
+      "harmonic": "泛音 (fanyin) -- string lightly touched at a hui node and released at the moment of plucking, producing a harmonic overtone."
+    },
+    "hui_system": "13 hui (徽) position markers inlaid along the string's length, real convention. Only hui 7 (the exact midpoint) is used here with an acoustically confident pitch consequence (see pitch_interpretive_policy) -- other hui values appear as position labels only, without a claimed pitch derivation.",
+    "duration_policy": "Real jianzipu does not specify rhythm. The 'duration' field below is honestly 'unspecified' for every note in this fixture -- this is not a gap to be filled with a default, it is the documented state of the source notation.",
+    "pitch_interpretive_policy": "Real jianzipu does not specify absolute pitch directly; pitch is a physical consequence of string + position + the player's chosen tuning, transmitted separately from the tablature by oral/performance tradition. The 'pitch_interpretive' field is populated ONLY where it can be derived with reasonable confidence from the stated tuning below (open strings directly; the hui-7 octave harmonic, which is the one hui-to-interval fact this fixture treats as reliable). Everywhere else it is left null with an explanatory status string, rather than guessed."
+  },
+
+  "tuning": {
+    "name": "zhengdiao (正調) / 'standard' tuning -- illustrative anchor only",
+    "caveat": "Guqin has no single historically fixed absolute pitch standard; the reference pitch below (string 1 = C3, MIDI 48) is a common modern convention, chosen here only so this fixture's interpretive layer has something concrete to compute from, not as a claim about how the piece was historically pitched.",
+    "open_strings_interpretive": {
+      "1": { "note_name": "C3", "midi": 48 },
+      "2": { "note_name": "D3", "midi": 50 },
+      "3": { "note_name": "F3", "midi": 53 },
+      "4": { "note_name": "G3", "midi": 55 },
+      "5": { "note_name": "A3", "midi": 57 },
+      "6": { "note_name": "C4", "midi": 60 },
+      "7": { "note_name": "D4", "midi": 62 }
+    }
+  },
+
+  "sections": [
+    {
+      "section_id": "harmonic-refrain-1",
+      "section_label_en": "First statement of the harmonic 'plum blossom' refrain (illustrative)",
+      "structural_status": "The existence of a recurring harmonic refrain stated three times, alternating with contrasting stopped-tone passages, is a documented structural fact about this piece (see source-note.md). The specific notes below are invented to illustrate that shape, not transcribed.",
+      "note_events": [
+        {
+          "index": 0,
+          "string": 5,
+          "position": { "type": "harmonic", "hui": 7, "hui_status": "synthetic" },
+          "technique": { "right_hand": "tiao (挑)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": "A4",
+            "midi": 69,
+            "derivation": "open-string(string 5 = A3) + hui-7 octave harmonic (+12 semitones)",
+            "status": "interpretive, derived from stated tuning; not source-given"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 1,
+          "string": 6,
+          "position": { "type": "harmonic", "hui": 7, "hui_status": "synthetic" },
+          "technique": { "right_hand": "gou (勾)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": "C5",
+            "midi": 72,
+            "derivation": "open-string(string 6 = C4) + hui-7 octave harmonic (+12 semitones)",
+            "status": "interpretive, derived from stated tuning; not source-given"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 2,
+          "string": 5,
+          "position": { "type": "harmonic", "hui": 9, "hui_status": "synthetic" },
+          "technique": { "right_hand": "tiao (挑)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": null,
+            "status": "not computed -- this fixture only treats hui 7 (the octave node) as a reliable pitch derivation; other hui-to-interval mappings are not reproduced here with confidence, so this is left unspecified rather than guessed"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 3,
+          "string": 4,
+          "position": { "type": "harmonic", "hui": 7, "hui_status": "synthetic" },
+          "technique": { "right_hand": "gou (勾)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": "G4",
+            "midi": 67,
+            "derivation": "open-string(string 4 = G3) + hui-7 octave harmonic (+12 semitones)",
+            "status": "interpretive, derived from stated tuning; not source-given"
+          },
+          "source_status": "synthetic_illustrative"
+        }
+      ]
+    },
+    {
+      "section_id": "stopped-tone-passage-1",
+      "section_label_en": "First contrasting stopped-tone passage (illustrative)",
+      "structural_status": "The alternation with a contrasting, more melodically active stopped-tone (按音) passage between harmonic-refrain statements is documented (see source-note.md). Specific notes invented.",
+      "note_events": [
+        {
+          "index": 4,
+          "string": 3,
+          "position": { "type": "stopped", "hui": 9, "hui_status": "synthetic" },
+          "technique": { "right_hand": "mo (抹)", "left_hand_ornament": "yin (吟)" },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": null,
+            "status": "not computed -- stopped-position pitch requires a hui-to-string-length ratio model this fixture does not implement; left unspecified rather than guessed"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 5,
+          "string": 3,
+          "position": { "type": "stopped", "hui": 8, "hui_status": "synthetic" },
+          "technique": { "right_hand": "tiao (挑)", "left_hand_ornament": "chuo (綽)" },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": null,
+            "status": "not computed -- see note on index 4"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 6,
+          "string": 4,
+          "position": { "type": "stopped", "hui": 10, "hui_status": "synthetic" },
+          "technique": { "right_hand": "gou (勾)", "left_hand_ornament": "nao (猱)" },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": null,
+            "status": "not computed -- see note on index 4"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 7,
+          "string": 2,
+          "position": { "type": "open", "hui": null, "hui_status": "n/a (open string)" },
+          "technique": { "right_hand": "ti (剔)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": "D3",
+            "midi": 50,
+            "derivation": "open-string(string 2)",
+            "status": "interpretive, derived from stated tuning; not source-given"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 8,
+          "string": 3,
+          "position": { "type": "stopped", "hui": 7, "hui_status": "synthetic" },
+          "technique": { "right_hand": "mo (抹)", "left_hand_ornament": "zhu (注)" },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": null,
+            "status": "not computed -- see note on index 4"
+          },
+          "source_status": "synthetic_illustrative"
+        }
+      ]
+    },
+    {
+      "section_id": "harmonic-refrain-2",
+      "section_label_en": "Second statement of the harmonic refrain (illustrative)",
+      "structural_status": "Second of the three documented refrain statements. Specific notes invented; deliberately similar in shape to harmonic-refrain-1 to illustrate 'refrain' as a compositional idea, not a claim of note-for-note repetition in the real piece.",
+      "note_events": [
+        {
+          "index": 9,
+          "string": 5,
+          "position": { "type": "harmonic", "hui": 7, "hui_status": "synthetic" },
+          "technique": { "right_hand": "tiao (挑)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": "A4",
+            "midi": 69,
+            "derivation": "open-string(string 5 = A3) + hui-7 octave harmonic (+12 semitones)",
+            "status": "interpretive, derived from stated tuning; not source-given"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 10,
+          "string": 7,
+          "position": { "type": "harmonic", "hui": 7, "hui_status": "synthetic" },
+          "technique": { "right_hand": "gou (勾)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": "D5",
+            "midi": 74,
+            "derivation": "open-string(string 7 = D4) + hui-7 octave harmonic (+12 semitones)",
+            "status": "interpretive, derived from stated tuning; not source-given"
+          },
+          "source_status": "synthetic_illustrative"
+        },
+        {
+          "index": 11,
+          "string": 6,
+          "position": { "type": "harmonic", "hui": 5, "hui_status": "synthetic" },
+          "technique": { "right_hand": "tiao (挑)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": null,
+            "status": "not computed -- hui 5 pitch derivation not attempted with confidence in this fixture"
+          },
+          "source_status": "synthetic_illustrative"
+        }
+      ]
+    },
+    {
+      "section_id": "coda-fragment",
+      "section_label_en": "Closing fragment (illustrative)",
+      "structural_status": "This fixture stops after a short excerpt rather than attempting a full performance-length piece (a real performance runs several minutes and far more note-events than this file contains). The third documented refrain statement and the piece's actual close are NOT represented here -- truncated deliberately rather than padded out with more invented material.",
+      "note_events": [
+        {
+          "index": 12,
+          "string": 1,
+          "position": { "type": "open", "hui": null, "hui_status": "n/a (open string)" },
+          "technique": { "right_hand": "gou (勾)", "left_hand_ornament": null },
+          "duration": "unspecified",
+          "pitch_interpretive": {
+            "note_name": "C3",
+            "midi": 48,
+            "derivation": "open-string(string 1)",
+            "status": "interpretive, derived from stated tuning; not source-given"
+          },
+          "source_status": "synthetic_illustrative"
+        }
+      ]
+    }
+  ]
+}
