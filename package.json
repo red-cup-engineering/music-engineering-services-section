@@ -7,8 +7,8 @@
     "render-track": "./scripts/render-track.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/computer-audio-engineering-services-section": "0.2.0",
-    "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0"
+    "@red-cup-engineering/computer-audio-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-text-content-engineering-services-section": "workspace:*"
   },
   "scripts": {
     "render": "node scripts/render-track.mjs",
