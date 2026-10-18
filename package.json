@@ -3,6 +3,11 @@
   "version": "0.2.1",
   "type": "module",
   "description": "Red Cup Engineering service for generative ambient music: a generative composition layer (seeded adaptive intensity-layered arrangement -- leitmotif/harmony/transitions -- and a serializable cross-process performance-spec contract) over @red-cup-engineering/computer-audio-engineering-services-section's DSP core.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-content-engineering-services-section.git",
+    "directory": "services/computer-media-engineering-services-section/services/computer-audio-engineering-services-section/services/music-engineering-services-section"
+  },
   "bin": {
     "render-track": "./scripts/render-track.mjs"
   },
