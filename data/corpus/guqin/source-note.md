@@ -31,7 +31,7 @@ document) that is easy to produce a plausible-sounding but inaccurate
 guess for, and hard to verify without the source in hand. Guessing at that
 level and presenting it as "the 1425 tablature for Meihua Sannong" would be
 a fabrication attributed to a real historical source -- precisely the
-failure mode this project's own house standard (see
+failure mode this project's own Group standard (see
 `verified-structures-as-compositional-grammar.md` in the music-theory
 service, which this note deliberately mirrors in structure) exists to rule
 out: an invented compositional-analogy layer is fine as long as it is
