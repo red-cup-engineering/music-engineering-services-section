@@ -26,6 +26,7 @@
 // rather than a mechanism unto itself.
 
 import { makeRng, nextInt, nextRange, pick, hashStringToInt } from './random.mjs';
+import { ratAdd, ratZero, toNumber } from '@red-cup-engineering/metrologic/number/exact-number';
 import {
   generateMotif,
   transposeMotif,
@@ -189,5 +190,5 @@ export function reharmonizeAgainstScale(motif, scale, baseOctaveIndex = 1) {
  * @returns {number} whole notes
  */
 export function motifLengthWholeNotes(motif) {
-  return motif.reduce((sum, n) => sum + n.durationFrac.num / n.durationFrac.den, 0);
+  return toNumber(motif.reduce((sum, n) => ratAdd(sum, n.durationFrac), ratZero));
 }

@@ -1,3 +1,4 @@
+import { fromRatio } from '@red-cup-engineering/metrologic/number/exact-number';
 // leitmotif.test.mjs
 //
 // Checks leitmotif.mjs: determinism (same seed -> byte-identical core and
@@ -89,8 +90,8 @@ test('reharmonizeAgainstScale resolves the same core motif to different Hz value
 
 test('motifLengthWholeNotes sums durationFrac correctly', () => {
   const motif = [
-    { degree: 0, durationFrac: { num: 1, den: 4 }, rest: false },
-    { degree: 1, durationFrac: { num: 1, den: 2 }, rest: false },
+    { degree: 0, durationFrac: fromRatio(1, 4), rest: false },
+    { degree: 1, durationFrac: fromRatio(1, 2), rest: false },
   ];
   assert.equal(motifLengthWholeNotes(motif), 0.75);
 });

@@ -1,3 +1,5 @@
+import { toNumber } from '@red-cup-engineering/metrologic/number/exact-number';
+
 // transitions.mjs
 //
 // Musically-aligned state changes for arrangement.mjs's event stream: bar/
@@ -62,7 +64,7 @@ export function layOutMotifAsEvents(motif, opts) {
   const events = [];
   let tSec = startSec;
   for (const n of motif) {
-    const durSec = (n.durationFrac.num / n.durationFrac.den) * 4 * secPerQuarter;
+    const durSec = toNumber(n.durationFrac) * 4 * secPerQuarter;
     if (!n.rest) {
       events.push({ type: 'note', stem, instrumentHint, degree: n.degree, octaveIndex, startSec: tSec, durSec, velocity });
     }

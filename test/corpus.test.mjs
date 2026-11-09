@@ -1,3 +1,4 @@
+import { ratSign } from '@red-cup-engineering/metrologic/number/exact-number';
 // corpus.test.mjs
 //
 // Checks corpus.mjs's guqin-corpus bridge: it derives a real, non-trivial
@@ -22,7 +23,7 @@ test('motifFromGuqinCorpus derives a non-empty core motif with valid degrees and
   for (const note of core) {
     assert.ok(Number.isInteger(note.degree) && note.degree >= 0 && note.degree <= 6, `degree ${note.degree} out of expected string-derived range`);
     assert.equal(note.rest, false);
-    assert.ok(Number.isInteger(note.durationFrac.num) && Number.isInteger(note.durationFrac.den));
+    assert.ok(ratSign(note.durationFrac) > 0);
   }
 });
 

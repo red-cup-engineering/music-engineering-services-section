@@ -16,9 +16,6 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  makeFraction,
-  multiplyFractionByInt,
-  divideFractionByInt,
   fractionToSeconds,
   DURATION,
   generateMotif,
@@ -101,15 +98,13 @@ test('augmentMotif exactly doubles durations (rational, checked as exact fractio
   const motif = [{ degree: 0, durationFrac: DURATION.DOTTED_QUARTER, rest: false }];
   const augmented = augmentMotif(motif, 2);
   // DOTTED_QUARTER = 3/8 of a whole note; doubled = 3/4 = DOTTED_HALF.
-  assert.deepEqual(augmented[0].durationFrac, makeFraction(3, 4));
   assert.deepEqual(augmented[0].durationFrac, DURATION.DOTTED_HALF);
 });
 
-test('multiplyFractionByInt / divideFractionByInt reduce to lowest terms', () => {
-  const f = makeFraction(2, 4); // should already reduce to 1/2
-  assert.deepEqual(f, { num: 1, den: 2 });
-  assert.deepEqual(multiplyFractionByInt(makeFraction(1, 4), 2), { num: 1, den: 2 });
-  assert.deepEqual(divideFractionByInt(makeFraction(1, 2), 2), { num: 1, den: 4 });
+test('rhythmic variation requires a positive safe integer factor', () => {
+  const motif = [{ degree: 0, durationFrac: DURATION.QUARTER, rest: false }];
+  assert.throws(() => augmentMotif(motif, 1.5), RangeError);
+  assert.throws(() => diminishMotif(motif, 0), RangeError);
 });
 
 test('fractionToSeconds gives real rhythmic proportion: half is exactly 2x quarter, whole is exactly 4x quarter', () => {

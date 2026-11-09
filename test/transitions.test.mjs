@@ -1,3 +1,4 @@
+import { fromRatio } from '@red-cup-engineering/metrologic/number/exact-number';
 // transitions.test.mjs
 //
 // Checks transitions.mjs: bar/phrase quantization lands exactly on
@@ -27,9 +28,9 @@ test('nextPhraseBoundarySec is nextBarBoundarySec at barsPerPhrase*secPerBar gra
 
 test('layOutMotifAsEvents converts a motif into absolute-time note events with no rests emitted', () => {
   const motif = [
-    { degree: 0, durationFrac: { num: 1, den: 4 }, rest: false },
-    { degree: 1, durationFrac: { num: 1, den: 4 }, rest: true },
-    { degree: 2, durationFrac: { num: 1, den: 2 }, rest: false },
+    { degree: 0, durationFrac: fromRatio(1, 4), rest: false },
+    { degree: 1, durationFrac: fromRatio(1, 4), rest: true },
+    { degree: 2, durationFrac: fromRatio(1, 2), rest: false },
   ];
   const { events, endSec } = layOutMotifAsEvents(motif, { startSec: 10, secPerQuarter: 1 });
   assert.equal(events.length, 2);

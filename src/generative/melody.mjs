@@ -12,14 +12,13 @@ import { subCheck } from './cover.mjs';
 import { pitchClassBit, scaleDegreeToPitchClassAndOctaveShift, OCTAVES } from './scale.mjs';
 import { nextInt, nextRange, pick } from './random.mjs';
 import { generateSteps } from './motif-grammar.mjs';
-import { makeFraction, multiplyFractionByInt, divideFractionByInt } from '@red-cup-engineering/computer-audio-engineering-services-section/fraction';
-
-export { makeFraction, multiplyFractionByInt, divideFractionByInt };
+import { divide, fromRatio, ratFromInt, ratMultiply, toNumber } from '@red-cup-engineering/metrologic/number/exact-number';
 
 /**
  * @typedef {object} DurationFraction
- * @property {number} num
- * @property {number} den - a fraction of one whole note (den is always a power of 2 in this module's palette, which is what keeps augmentation/diminution exact)
+ * @property {"exactNumber.rational"} kind
+ * @property {string} num
+ * @property {string} den - a fraction of one whole note
  */
 
 /**
@@ -42,16 +41,16 @@ export { makeFraction, multiplyFractionByInt, divideFractionByInt };
  */
 export function fractionToSeconds(frac, secPerQuarter) {
   const wholeNoteSec = 4 * secPerQuarter;
-  return (frac.num / frac.den) * wholeNoteSec;
+  return toNumber(frac) * wholeNoteSec;
 }
 
 /** Named slow note-value palette, as fractions of a whole note, suited to ambient pacing (a quarter note is the shortest value used, a whole note the longest). */
 export const DURATION = Object.freeze({
-  WHOLE: Object.freeze(makeFraction(1, 1)),
-  DOTTED_HALF: Object.freeze(makeFraction(3, 4)),
-  HALF: Object.freeze(makeFraction(1, 2)),
-  DOTTED_QUARTER: Object.freeze(makeFraction(3, 8)),
-  QUARTER: Object.freeze(makeFraction(1, 4)),
+  WHOLE: fromRatio(1, 1),
+  DOTTED_HALF: fromRatio(3, 4),
+  HALF: fromRatio(1, 2),
+  DOTTED_QUARTER: fromRatio(3, 8),
+  QUARTER: fromRatio(1, 4),
 });
 
 const MOTIF_DURATION_CHOICES = [DURATION.QUARTER, DURATION.QUARTER, DURATION.DOTTED_QUARTER, DURATION.HALF];
@@ -225,7 +224,9 @@ export function retrogradeMotif(motif) {
  * @returns {NoteEvent[]}
  */
 export function augmentMotif(motif, factor = 2) {
-  return motif.map((n) => ({ ...n, durationFrac: multiplyFractionByInt(n.durationFrac, factor) }));
+  if (!Number.isSafeInteger(factor) || factor <= 0) throw new RangeError("rhythmic factor must be a positive integer");
+  const scale = ratFromInt(factor);
+  return motif.map((n) => ({ ...n, durationFrac: ratMultiply(n.durationFrac, scale) }));
 }
 
 /**
@@ -238,7 +239,9 @@ export function augmentMotif(motif, factor = 2) {
  * @returns {NoteEvent[]}
  */
 export function diminishMotif(motif, factor = 2) {
-  return motif.map((n) => ({ ...n, durationFrac: divideFractionByInt(n.durationFrac, factor) }));
+  if (!Number.isSafeInteger(factor) || factor <= 0) throw new RangeError("rhythmic factor must be a positive integer");
+  const scale = ratFromInt(factor);
+  return motif.map((n) => ({ ...n, durationFrac: divide(n.durationFrac, scale) }));
 }
 
 // --- pitch resolution -----------------------------------------------------
