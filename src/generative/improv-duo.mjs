@@ -262,23 +262,23 @@ function pickCallMotif(session, sectionTag) {
  */
 export function advanceImprovDuo(session, throughSec) {
   while (session.tSec < throughSec) {
-    const regimeTag = classify({
+    const modeTag = classify({
       activeVoiceCount: session.flowEngine.activeVoiceIds.length,
       emaFilterDelta: session.flowEngine.emaFilterDelta,
       directFilterDelta: session.flowEngine.directFilterDelta,
       ticksSinceLastReset: session.flowEngine.ticksSinceLastReset,
     });
-    session.flowEngine.regimeTag = regimeTag;
-    session.regimeTag = regimeTag;
+    session.flowEngine.regimeTag = modeTag;
+    session.regimeTag = modeTag;
 
     const previousPhase = session.macroFormState.phase;
-    session.macroFormState = advanceMacroFormPhase(session.macroFormState, regimeTag);
+    session.macroFormState = advanceMacroFormPhase(session.macroFormState, modeTag);
     if (session.macroFormState.phase !== previousPhase) {
-      session.macroFormLog.push({ tSec: session.tSec, phase: session.macroFormState.phase, regimeTag });
+      session.macroFormLog.push({ tSec: session.tSec, phase: session.macroFormState.phase, regimeTag: modeTag });
     }
 
-    const windowSec = BASE_WINDOW_SEC * windowLengthMultiplier(regimeTag);
-    const targetCutoffHz = baseCutoffHz(regimeTag);
+    const windowSec = BASE_WINDOW_SEC * windowLengthMultiplier(modeTag);
+    const targetCutoffHz = baseCutoffHz(modeTag);
 
     // Reuse flow.mjs's driven-closure-flow engine purely as a harmonic-
     // coordination signal (engineState.chordMask): both voices' cadences

@@ -7,7 +7,7 @@
 // regime.mjs's growthTower(). The four operators are checked in
 // melody.test.mjs for their standard identities.
 
-import { growthTower, regimeGrowthKind } from './regime.mjs';
+import { growthTower, modeGrowthKind } from './regime.mjs';
 import { subCheck } from './cover.mjs';
 import { pitchClassBit, scaleDegreeToPitchClassAndOctaveShift, OCTAVES } from './scale.mjs';
 import { nextInt, nextRange, pick } from './random.mjs';
@@ -65,7 +65,7 @@ const REST_DURATION_CHOICES = [DURATION.QUARTER, DURATION.DOTTED_QUARTER];
 // (STRICT, per flow.mjs's makeFlowState); DEVELOPMENT is any non-STRICT
 // regime; RETURN is STRICT recurring. `everLeftStrict` distinguishes that
 // recurrence from still being in the opening regime.
-const MACRO_FORM_START_REGIME = 'STRICT';
+const MACRO_FORM_START_MODE = 'STRICT';
 
 /**
  * Creates the initial macro-form state: OPENING, nothing left yet.
@@ -86,10 +86,10 @@ export function makeMacroFormState() {
  * @param {import('./regime.mjs').RegimeTag} regimeTag - this tick's classify() result
  * @returns {{phase: MelodySectionTag, everLeftStrict: boolean}}
  */
-export function advanceMacroFormPhase(state, regimeTag) {
-  const everLeftStrict = state.everLeftStrict || regimeTag !== MACRO_FORM_START_REGIME;
+export function advanceMacroFormPhase(state, modeTag) {
+  const everLeftStrict = state.everLeftStrict || modeTag !== MACRO_FORM_START_MODE;
   let phase;
-  if (regimeTag !== MACRO_FORM_START_REGIME) {
+  if (modeTag !== MACRO_FORM_START_MODE) {
     phase = 'DEVELOPMENT';
   } else if (everLeftStrict) {
     phase = 'RETURN';
@@ -144,8 +144,8 @@ export function pickGrammarBiasForSection(rng, sectionTag) {
  * @param {number} length
  * @returns {DurationFraction[]}
  */
-export function motifDurationsFromGrowthTower(regimeTag, length) {
-  const kind = regimeGrowthKind(regimeTag);
+export function motifDurationsFromGrowthTower(modeTag, length) {
+  const kind = modeGrowthKind(modeTag);
   const seq = growthTower(kind, length);
   return seq.map((v) => GROWTH_TOWER_DURATION_PALETTE[v % GROWTH_TOWER_DURATION_PALETTE.length]);
 }
@@ -348,14 +348,14 @@ function applyOperator(name, rng, baseMotif, sectionTag = 'DEVELOPMENT') {
  * @returns {{notes:ScheduledNoteEvent[], startSec:number, endSec:number, baseMotif:NoteEvent[], sectionTag:MelodySectionTag}}
  */
 export function generatePhrase(rng, scale, opts) {
-  const { startSec, chordMask = scale.scaleMask, regimeTag = 'STRICT', secPerQuarter = 1.0, sectionTag = 'DEVELOPMENT', thematicMotif } = opts;
+  const { startSec, chordMask = scale.scaleMask, regimeTag: modeTag = 'STRICT', secPerQuarter = 1.0, sectionTag = 'DEVELOPMENT', thematicMotif } = opts;
 
   let baseMotif;
   if (thematicMotif && thematicMotif.length > 0) {
     baseMotif = thematicMotif.map((n) => ({ ...n }));
   } else {
     const motifLength = nextInt(rng, 3, 5); // 3-4 notes
-    const growthDurations = motifDurationsFromGrowthTower(regimeTag, motifLength);
+    const growthDurations = motifDurationsFromGrowthTower(modeTag, motifLength);
     const bias = pickGrammarBiasForSection(rng, sectionTag);
     baseMotif = generateMotif(rng, { length: motifLength, durations: growthDurations, bias });
   }

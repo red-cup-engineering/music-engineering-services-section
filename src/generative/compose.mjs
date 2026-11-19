@@ -357,8 +357,8 @@ export function renderTrack({
 
   let transportSampleIndex = 0;
   let previousCutoffHz = engineState.filterCutoffHz;
-  let regimeTransitions = 0;
-  let previousRegimeTag = engineState.regimeTag;
+  let modeTransitions = 0;
+  let previousModeTag = engineState.regimeTag;
   // Melodic macro-form (OPENING/DEVELOPMENT/RETURN): driven by the actual
   // regime sequence (melody.mjs's advanceMacroFormPhase), not a fixed
   // clock-percentage schedule -- see melody.mjs's header comment for why
@@ -370,25 +370,25 @@ export function renderTrack({
   while (transportSampleIndex < totalSamples) {
     const transportTimeSec = transportSampleIndex / sampleRate;
 
-    const regimeTag = classify({
+    const modeTag = classify({
       activeVoiceCount: engineState.activeVoiceIds.length,
       emaFilterDelta: engineState.emaFilterDelta,
       directFilterDelta: engineState.directFilterDelta,
       ticksSinceLastReset: engineState.ticksSinceLastReset,
     });
-    if (regimeTag !== previousRegimeTag) {
-      regimeTransitions += 1;
-      previousRegimeTag = regimeTag;
+    if (modeTag !== previousModeTag) {
+      modeTransitions += 1;
+      previousModeTag = modeTag;
     }
-    engineState.regimeTag = regimeTag;
+    engineState.regimeTag = modeTag;
     const previousMacroFormPhase = macroFormState.phase;
-    macroFormState = advanceMacroFormPhase(macroFormState, regimeTag);
+    macroFormState = advanceMacroFormPhase(macroFormState, modeTag);
     if (macroFormState.phase !== previousMacroFormPhase) {
-      macroFormLog.push({ tSec: transportTimeSec, phase: macroFormState.phase, regimeTag });
+      macroFormLog.push({ tSec: transportTimeSec, phase: macroFormState.phase, regimeTag: modeTag });
     }
 
-    const windowSec = BASE_WINDOW_SEC * windowLengthMultiplier(regimeTag);
-    const targetCutoffHz = baseCutoffHz(regimeTag);
+    const windowSec = BASE_WINDOW_SEC * windowLengthMultiplier(modeTag);
+    const targetCutoffHz = baseCutoffHz(modeTag);
 
     const inOutro = transportTimeSec >= durationSec * (1 - OUTRO_FRACTION);
     const base = inOutro ? 0 : baseInjectProb;
@@ -658,7 +658,7 @@ export function renderTrack({
     peak: peakOf(busL, busR),
     rms: rmsOf(busL, busR),
     spiralCount: engineState.spiralCount,
-    regimeTransitions,
+    regimeTransitions: modeTransitions,
     finalRegime: engineState.regimeTag,
     melodyNoteOnsets,
     melodyUniqueDegrees: melodyOnsetDegrees.size,

@@ -309,11 +309,11 @@ const OVERTONE_SEC_PER_UNIT = 1.3; // seconds per growth-tower rhythmic unit -- 
 const NOTE_GLIDE_SEC_RANGE = [0.12, 0.4];
 const OVERTONE_NOTE_COUNT_RANGE = [4, 8];
 
-function generateOvertonePhrase(rng, { startSec, regimeTag, sectionTag }) {
+function generateOvertonePhrase(rng, { startSec, regimeTag: modeTag, sectionTag }) {
   const noteCount = nextInt(rng, OVERTONE_NOTE_COUNT_RANGE[0], OVERTONE_NOTE_COUNT_RANGE[1] + 1);
   const bias = pickGrammarBiasForSection(rng, sectionTag);
   const steps = generateSteps(rng, noteCount, bias); // noteCount-1 integer deltas over harmonic index
-  const durations = motifDurationsFromGrowthTower(regimeTag, noteCount);
+  const durations = motifDurationsFromGrowthTower(modeTag, noteCount);
   const [lo, hi] = F1_HARMONIC_RANGE_BY_SECTION[sectionTag] || F1_HARMONIC_RANGE_BY_SECTION.DEVELOPMENT;
   let h1 = nextInt(rng, lo, hi + 1);
   const f2Offset = nextInt(rng, F2_OFFSET_RANGE[0], F2_OFFSET_RANGE[1] + 1);
@@ -469,34 +469,34 @@ export function renderThroatTrack({
 
   let transportSampleIndex = 0;
   let previousCutoffHz = engineState.filterCutoffHz;
-  let regimeTransitions = 0;
-  let previousRegimeTag = engineState.regimeTag;
+  let modeTransitions = 0;
+  let previousModeTag = engineState.regimeTag;
 
   while (transportSampleIndex < totalSamples) {
     const transportTimeSec = transportSampleIndex / sampleRate;
 
-    const regimeTag = classify({
+    const modeTag = classify({
       activeVoiceCount: engineState.activeVoiceIds.length,
       emaFilterDelta: engineState.emaFilterDelta,
       directFilterDelta: engineState.directFilterDelta,
       ticksSinceLastReset: engineState.ticksSinceLastReset,
     });
-    if (regimeTag !== previousRegimeTag) {
-      regimeTransitions += 1;
-      previousRegimeTag = regimeTag;
+    if (modeTag !== previousModeTag) {
+      modeTransitions += 1;
+      previousModeTag = modeTag;
     }
-    engineState.regimeTag = regimeTag;
+    engineState.regimeTag = modeTag;
     if (process.env.DEBUG_THROAT) {
-      console.error(`t=${transportTimeSec.toFixed(1)} regime=${regimeTag} activeVoices=${engineState.activeVoiceIds.length} chordMask=${engineState.chordMask.toString(2)} ticksSinceLastReset=${engineState.ticksSinceLastReset}`);
+      console.error(`t=${transportTimeSec.toFixed(1)} regime=${modeTag} activeVoices=${engineState.activeVoiceIds.length} chordMask=${engineState.chordMask.toString(2)} ticksSinceLastReset=${engineState.ticksSinceLastReset}`);
     }
     const previousMacroFormPhase = macroFormState.phase;
-    macroFormState = advanceMacroFormPhase(macroFormState, regimeTag);
+    macroFormState = advanceMacroFormPhase(macroFormState, modeTag);
     if (macroFormState.phase !== previousMacroFormPhase) {
-      macroFormLog.push({ tSec: transportTimeSec, phase: macroFormState.phase, regimeTag });
+      macroFormLog.push({ tSec: transportTimeSec, phase: macroFormState.phase, regimeTag: modeTag });
     }
 
-    const windowSec = BASE_WINDOW_SEC * windowLengthMultiplier(regimeTag);
-    const targetCutoffHz = baseCutoffHz(regimeTag);
+    const windowSec = BASE_WINDOW_SEC * windowLengthMultiplier(modeTag);
+    const targetCutoffHz = baseCutoffHz(modeTag);
 
     const inOutro = transportTimeSec >= durationSec * (1 - OUTRO_FRACTION);
     const base = inOutro ? 0 : BASE_INJECT_PROB;
@@ -679,7 +679,7 @@ export function renderThroatTrack({
     durationSec,
     peak: peakOf(busL, busR),
     rms: rmsOf(busL, busR),
-    regimeTransitions,
+    regimeTransitions: modeTransitions,
     finalRegime: engineState.regimeTag,
     overtoneNoteOnsets,
     overtoneUniqueH1: overtoneH1Set.size,
