@@ -1,3 +1,4 @@
+import { isRecord } from "@red-cup-engineering/signcell/values";
 // presets.mjs
 //
 // Game-oriented presets and request-parameter resolution for the HTTP
@@ -109,9 +110,7 @@ export { DEFAULT_RANDOM_CARDINALITY_RANGE };
 // spinner or a fake progress bar with no real basis.
 export const ESTIMATED_RENDER_SECONDS_PER_AUDIO_SECOND = 1 / 9;
 
-function isPlainObject(x) {
-  return typeof x === 'object' && x !== null && !Array.isArray(x);
-}
+
 
 /**
  * Validates and normalizes a /generate body's `mode` field, which may be a
@@ -132,7 +131,7 @@ export function validateAndNormalizeMode(mode, errors) {
     return mode;
   }
 
-  if (isPlainObject(mode)) {
+  if (isRecord(mode)) {
     const cardinality = Number(mode.cardinality);
     const rotation = mode.rotation === undefined ? 0 : Number(mode.rotation);
     const chromaticUniverse = mode.chromaticUniverse === undefined ? SCALE_CHROMATIC_UNIVERSE : Number(mode.chromaticUniverse);
