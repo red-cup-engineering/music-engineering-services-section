@@ -65,8 +65,8 @@ export function classify({ activeVoiceCount, emaFilterDelta, directFilterDelta, 
  * @param {RegimeTag} regimeTag
  * @returns {number}
  */
-export function windowLengthMultiplier(modeTag) {
-  switch (modeTag) {
+export function windowLengthMultiplier(regimeTag) {
+  switch (regimeTag) {
     case 'STRICT':
       return 1.0;
     case 'SCOTT':
@@ -87,8 +87,8 @@ export function windowLengthMultiplier(modeTag) {
  * @param {RegimeTag} regimeTag
  * @returns {number} Hz
  */
-export function baseCutoffHz(modeTag) {
-  switch (modeTag) {
+export function baseCutoffHz(regimeTag) {
+  switch (regimeTag) {
     case 'STRICT':
       return 1800;
     case 'SCOTT':
@@ -102,7 +102,7 @@ export function baseCutoffHz(modeTag) {
   }
 }
 
-const GROWTH_TOWER_KIND_BY_MODE = {
+const GROWTH_TOWER_KIND_BY_REGIME = {
   STRICT: 'padovan',
   SCOTT: 'fibonacci',
   TRANSFINITE_BOUNDED: 'tribonacci',
@@ -110,8 +110,8 @@ const GROWTH_TOWER_KIND_BY_MODE = {
 };
 
 /** @param {RegimeTag} regimeTag @returns {string} */
-export function modeGrowthKind(modeTag) {
-  return GROWTH_TOWER_KIND_BY_MODE[modeTag] || 'fibonacci';
+export function regimeGrowthKind(regimeTag) {
+  return GROWTH_TOWER_KIND_BY_REGIME[regimeTag] || 'fibonacci';
 }
 
 /**
@@ -177,8 +177,8 @@ export function growthTower(kind, length) {
  * @param {number} count
  * @returns {number[]} onset interval lengths, in seconds
  */
-export function onsetIntervalsSec(modeTag, baseUnitSec, count) {
-  const kind = modeGrowthKind(modeTag);
+export function onsetIntervalsSec(regimeTag, baseUnitSec, count) {
+  const kind = regimeGrowthKind(regimeTag);
   const seq = growthTower(kind, count);
   return seq.map((v, i) => {
     const raw = baseUnitSec * v;

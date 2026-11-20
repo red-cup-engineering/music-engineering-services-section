@@ -112,15 +112,15 @@ function makeVoiceId(pc, tickTime) {
  * @returns {{admittedVoices:Array, addedVoices:Array, droppedVoices:Array, coveredMask:number, fullyCovered:boolean}}
  */
 export function resolveCover({ targetMask, currentVoices, maxVoices = 6, tickTime }) {
-  const validated = currentVoices.filter((v) => subCheck(v.bits, targetMask));
+  const admitted = currentVoices.filter((v) => subCheck(v.bits, targetMask));
   const rejected = currentVoices.filter((v) => !subCheck(v.bits, targetMask));
 
   const dropped = rejected.map((v) => ({ ...v, reason: 'sub-check-failed' }));
 
-  const coveredMask = validated.reduce((m, v) => m | v.bits, 0);
+  const coveredMask = admitted.reduce((m, v) => m | v.bits, 0);
   const missingMask = targetMask & ~coveredMask;
 
-  let working = validated.slice();
+  let working = admitted.slice();
   const added = [];
 
   for (let pc = 0; pc < 12; pc++) {
