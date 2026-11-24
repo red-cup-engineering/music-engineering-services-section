@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generative Ambient Engine</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <h1>Generative Ambient Engine</h1>
+    <p class="tagline">a schema-driven parametric interface, not a preset menu</p>
+  </header>
+
+  <p class="epigraph" id="intro-note">
+    Every control below is read from <code>GET /schema</code> at load time and
+    posted to <code>POST /generate</code> as a plain JSON body -- nothing here
+    is hardcoded to today's parameter set on the server side. The scale/mode
+    control, for instance, is not a fixed list of instrument presets: it
+    exposes the actual maximal-evenness generator (cardinality + rotation
+    coordinates) the engine now runs on, with the four classic named modes
+    kept only as shorthand for specific coordinates. See
+    <a href="/README.md" id="readme-link">../README.md</a> for the full
+    parameter reference and this service's honestly-documented limits.
+  </p>
+
+  <section id="quickstart-section">
+    <h2>Quick start</h2>
+    <p>These buttons only <em>prefill</em> the fields below from a named
+      preset or mood bundle (see <code>GET /presets</code>) -- the actual
+      request always sends the concrete parameter values shown in the form,
+      never a preset name. What you see is what gets rendered.</p>
+    <h3>Presets</h3>
+    <ul class="preset-list" id="preset-list"><li><em>loading&hellip;</em></li></ul>
+    <h3>Mood (pitch material + reverb only -- see note below)</h3>
+    <ul class="preset-list" id="mood-list"></ul>
+  </section>
+
+  <section id="params-section">
+    <h2>Parameters</h2>
+    <form id="generate-form">
+      <div class="param-grid" id="param-grid"><p><em>loading schema&hellip;</em></p></div>
+      <div class="actions">
+        <button type="submit" id="generate-button" disabled>Generate</button>
+        <button type="button" id="cancel-button" class="link-button" hidden>cancel</button>
+        <span class="status-line" id="status-line"></span>
+      </div>
+      <div class="error-box" id="error-box" hidden></div>
+    </form>
+  </section>
+
+  <section id="result-section" hidden>
+    <h2>Result</h2>
+    <audio id="audio-player" controls></audio>
+    <p><a id="download-link" href="#">download the WAV</a></p>
+
+    <h3>Amplitude over time</h3>
+    <canvas id="waveform" width="1200" height="180"></canvas>
+    <p class="waveform-caption" id="waveform-caption"></p>
+
+    <h3>Measured, not decorated</h3>
+    <table class="metrics" id="metrics-table"></table>
+  </section>
+
+  <footer>
+    <p>Plain HTML/CSS/vanilla JS, no build step, no framework, no runtime
+      dependency -- served as static files by this package's own
+      <code>http-server.mjs</code>. Renders run in a worker thread on the
+      server; expect roughly the wall-clock estimate shown above the
+      Generate button, not instant playback -- a 30&nbsp;second track takes
+      about 3&nbsp;seconds to render on the reference machine, a
+      300&nbsp;second one takes about half a minute.</p>
+  </footer>
+
+</div>
+<script src="/app.js" defer></script>
+</body>
+</html>
